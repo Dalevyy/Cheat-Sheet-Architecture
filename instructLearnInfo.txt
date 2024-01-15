@@ -1,0 +1,11 @@
+There are three instruction formats in the MIPS architecture.
+1) R-Format: Instructions that only use REGISTERS
+2) I-Format: Instructions that use IMMEDIATE values 
+3) J-Format: Instructions that contain ADDRESSES
+
+Supported Registers: $t0-$t9, $s0-$s7
+
+Supported Instructions: 
+R-Format: add, addu, sub, subu, and, or, nor, slt, sltu, sll, srl, jr 
+I-Format: beq, bne, addi, addiu, andi, ori, slti, sltiu, lui, lw, sw
+J-Format: j, jal

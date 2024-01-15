@@ -1,0 +1,11 @@
+Program Counter: Beginning of the datapath that stores the next instruction to be executed
+Instruction Memory: Stores the binary instruction that will be fetched
+RegToDst Mux: Mux that decides if we need to use bits 20-16 or bits 15-11 for the write register 
+Register File: Contains all data stored by the CPU's registers 
+Sign Extend: Extends any 16-bit immediate into 32-bits 
+ALUSrc Mux: Mux that decides if we use the data from the register file or sign extend 
+ALU: Performs arithmetic operations, calculates memory addresses, and performs branch comparisons
+Data Memory: Stores data needing to be used by the current program
+MemToReg Mux: Mux that decides if data from ALU or data memory is needed by register file
+Branch Mux: Mux that decides if a branch was taken or not
+Jump Mux: Mux that decides if a jump was taken or not 
