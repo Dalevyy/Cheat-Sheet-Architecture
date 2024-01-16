@@ -7,7 +7,7 @@ from random import randint
 from binaryArithAlgos import algoStart
 from conversion import forwardConvertStart
 
-# Globals
+# Global tuples for fonts
 defaultMainFrameFont = ('Times New Roman', 30, 'bold')
 defaultFont = ('Times New Roman', 21)
 defaultFontLine = ('Times New Roman', 21, 'underline', 'bold')
@@ -15,12 +15,10 @@ defaultFontBold = ('Times New Roman', 21, 'bold')
 instructFont = ('Times New Roman', 25)
 instructFontBold = ('Times New Roman', 25, 'bold')
 
+'''
+Class to build the root window for the GUI
+'''
 class CheatSheetWindow(tk.Tk):  
-    '''
-    Decription: Default constructor for CheatSheetWindow class
-    Parameters: Self
-    Return Type: None
-    '''
     def __init__(self):
         super().__init__()
         self.title("Cheat Sheet Architecture")
@@ -28,7 +26,6 @@ class CheatSheetWindow(tk.Tk):
         # Setting up window size based on user's monitor
         self.width = 1280
         self.height = 720
-
         user_width = self.winfo_screenwidth()
         user_height = self.winfo_screenheight()
 
@@ -37,15 +34,13 @@ class CheatSheetWindow(tk.Tk):
         self.geometry(f"{self.width}x{self.height}+{user_x}+{user_y}")
 
         self.resizable(0, 0)
-        # Setting up main frame now
+        # Create a main frame inside root window to put widgets into
         self.mainFrame = MainFrame(self)
 
+'''
+Class for the start screen of the app
+'''
 class MainFrame(ttk.Frame):
-    '''
-    Description: Default constructor for the MainFrame class
-    Parameters: Self and the master window
-    Return Type: None
-    '''
     def __init__(self, master):
         super().__init__(master)
         # Create the basic properties for the mainframe
@@ -53,11 +48,6 @@ class MainFrame(ttk.Frame):
         self.pack(fill='both', expand =True)
         self.createMainFrame(master)
     
-    '''
-    Description: Creates the widgets needed for the starting screen
-    Parameters: Self
-    Return Type: None
-    '''
     def createMainFrame(self, master):
         # Start screen image label
         self.startImg = tk.PhotoImage(file=f"{os.getcwd()}/welcomeScreen.png")
@@ -85,12 +75,7 @@ class MainFrame(ttk.Frame):
         pathTip = Hovertip(self.pathBut, text="Click here to learn the components\nof a simple CPU datapath!")
 
         self.mainFrameLayout()
-    
-    '''
-    Description: Places all the widgets into the main frame 
-    Parameters: Self
-    Return Type: None 
-    '''
+
     def mainFrameLayout(self):
         self.imgLabel.place(relx=0.035,rely=0.050)
         self.performBut.place(relx=0.03,rely=0.8)
@@ -98,12 +83,10 @@ class MainFrame(ttk.Frame):
         self.arithBut.place(relx=0.56,rely=0.8)
         self.pathBut.place(relx=0.79, rely= 0.8)
 
+'''
+Class for the Performance section of the GUI
+'''
 class PerformFrame(ttk.Frame):
-    '''
-    Description: Default constructor for PerformFrame class
-    Parameters: Object and the master window
-    Return Type: None
-    '''
     def __init__(self, master):
         super().__init__(master)
         # Create the basic properties for the mainframe
@@ -147,11 +130,6 @@ class PerformFrame(ttk.Frame):
         self.backBut = BackButton(self, master)
         self.performFrameLayout()
         
-    '''
-    Description: Formats the performance frame onto the app
-    Parameters: Self
-    Return Type: None
-    '''
     def performFrameLayout(self):
         self.backBut.place(relx=0.0,rely=0.0)
         self.performPrompt.place(relx=0.025,rely=0.1)
@@ -171,7 +149,7 @@ class PerformFrame(ttk.Frame):
         self.calcBut.place(relx=0.50,rely=0.25)
 
     def performCalc(self, master, aET, bET, aCR, bCC):
-        # Next, do some error checking to ensure user inputted correct values
+        # First, do some error checking to ensure user inputted correct values
         try:
             # Convert the execution times/clock rate for CPU A into ints
             aET = int(aET)
@@ -248,6 +226,9 @@ class PerformFrame(ttk.Frame):
         self.crAnsLabel.place(relx=0.760,rely=0.87)
         self.tryAgainBut.place(relx=0.420,rely=0.93)
 
+'''
+Class for the Instruction section of the GUI
+'''
 class InstructFrame(ttk.Frame):
     def __init__(self,master):
         super().__init__(master)
@@ -292,7 +273,7 @@ class InstructFrame(ttk.Frame):
         columnsI = ["OP", "RS", "RT", "Immediate"]
         columnsJ = ["OP", "Address"]
 
-        # Next, convert the instruction by going to the conversion.py file starting
+        # Convert the instruction by going to the conversion.py file starting
         # in the forwardConvertStart function
         bStr, hStr, instructLst, ogLst = forwardConvertStart(instruct.get())
 
@@ -364,6 +345,9 @@ class InstructFrame(ttk.Frame):
             # Second Label will make SHAMT equal to the number of bits we are shifting
             ttk.Label(self,text= ogLst[2], font=instructFont).place(x=900,y=300)
 
+'''
+Class for arithmetic section of the GUI
+'''
 class ArithFrame(ttk.Frame):
     def __init__(self,master):
         super().__init__(master)        
@@ -392,7 +376,7 @@ class ArithFrame(ttk.Frame):
         self.algoChooser.place(relx=0.140,rely=0.18)
 
     def performArith(self, algoType, master):
-        # Must write here to be able to destroy later 
+        # Must declare these error labels here, so we can delete later and not have them show up on reinputs
         errLabel = ttk.Label(self,font=defaultFontBold, text=f"Error! A number was not inputted. Please try again!",foreground='red',background='black')
         errLabel2 = ttk.Label(self, font=defaultFontBold, text=f"Error! A negative number was inputted. Please try again!",foreground='red',background='black')
         errLabel3 = ttk.Label(self,font=defaultFontBold, text=f"Error! Number exceeds 4-bit length. Please try again!", foreground='red',background='black')
@@ -458,12 +442,10 @@ class ArithFrame(ttk.Frame):
         # tryAgainTip = When a user's mouse is over the tryAgainButton, it will let the user know what will happen when they click the button
         self.tryAgainTip = Hovertip(self.tryAgainBut, text="Click if you want to calculate another \nexpression with a different algorithm.")
 
+'''
+Class for datapath section of GUI
+'''
 class DatapathFrame(ttk.Frame):
-    '''
-    Description: Default constructor for the DatapathFrame class
-    Parameters: Frame object followed by the root window
-    Return Type: Frame containing a datapath for the user
-    '''
     def __init__(self,master):
         super().__init__(master)
         self.pack(fill='both', expand =True)
@@ -553,6 +535,10 @@ class DatapathFrame(ttk.Frame):
             # tryAgainTip: When a user's mouse is over the tryAgainButton, it will tell the user the button will refresh the page to repeat the process
             self.tryAgainTip = Hovertip( self.tryAgainButton, text="Click if you want to locate a \ndifferent CPU component on the diagram.")
 
+'''
+Class for a scrolling frame when opening an instruct learn window
+Can add more text to the file to be displayed here in the future
+'''
 class ScrollFrame(ttk.Frame):
     def __init__(self, window, output):
         super().__init__(master= window)
@@ -571,6 +557,10 @@ class ScrollFrame(ttk.Frame):
         self.canvas.bind_all('<Button-4>', lambda event: self.canvas.yview_scroll(-1, "units"))
         self.canvas.bind_all('<Button-5>', lambda event: self.canvas.yview_scroll(1, "units"))
 
+'''
+Class to display a new window for additional info
+about processor instructions
+'''
 class InstructLearnWindow(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -580,7 +570,11 @@ class InstructLearnWindow(tk.Tk):
         instructLearnLst = [line for line in open("instructLearnInfo.txt", 'r')]
         
         learnScrollFrame = ScrollFrame(self, instructLearnLst)
-                
+
+'''
+Class to display a new window explaining the
+different components of a CPU
+'''                
 class DatapathLearnWindow(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -598,16 +592,9 @@ class DatapathLearnWindow(tk.Tk):
             ttk.Label(self,text= f"{i+1}) " + learnInfo[i], font=defaultFont).place(x=30, y=100+50*i)
 
 '''
-BackButton creates a back button for the user that will destroy the 
-current frame and return the user back to the start screen 
+Class that creates a back button to return to start screen 
 '''
 class BackButton(tk.Button):
-    '''
-    Description: Default constructor for the BackButton class
-    Parameters: It will take the button itself, the current frame the
-    button will be put into, and the root window
-    Return Type: Returns back button to caller 
-    '''
     def __init__(self, currFrame, master):
         super().__init__(currFrame,text="Back", font= defaultFontBold,command=lambda: [currFrame.destroy(), MainFrame(master)])
         self.backTip = Hovertip(self,text= "Go back to the start screen")
